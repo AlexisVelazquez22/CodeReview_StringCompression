@@ -63,11 +63,11 @@ namespace TestProject
         }
 
         [Theory]
-        [InlineData("hh555", "Succesfully compressed: hh/3")]
-        [InlineData("bf77", "Not compressed: bf))")]
-        [InlineData("ab43333", "Succesfully compressed: ab#^4")]
-        [InlineData("abbbb3333", "Succesfully compressed: ab4^4")]
-        [InlineData("ab4444444444444444444444444444444444", "Succesfully compressed: ab#34")]
+        [InlineData("hh555", "Succesfully compressed: hh53")]
+        [InlineData("bf77", "Not compressed: bf77")]
+        [InlineData("ab43333", "Succesfully compressed: ab434")]
+        [InlineData("abbbb3333", "Succesfully compressed: ab434")]
+        [InlineData("ab4444444444444444444444444444444444", "Succesfully compressed: ab434")]
         public void StringCompression_NumericCharacters(string input, string expectedOutput)
         {
             // arrange
