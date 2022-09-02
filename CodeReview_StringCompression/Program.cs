@@ -14,26 +14,14 @@
 
 using System.Text.RegularExpressions;
 
-public static class ExtensionMethods
-{
-    public static string ReplaceNumericValues(this string value)
-    { 
-        var newValue = value.Replace('0', '!');
-        newValue = newValue.Replace('1', '$');
-        newValue = newValue.Replace('2', '%');
-        newValue = newValue.Replace('3', '^');
-        newValue = newValue.Replace('4', '#');
-        newValue = newValue.Replace('5', '/');
-        newValue = newValue.Replace('6', '&');
-        newValue = newValue.Replace('7', ')');
-        newValue = newValue.Replace('8', '(');
-        newValue = newValue.Replace('9', '*');
-        return newValue;
-    }
-}
-
 public class Program
 {
+    static void WriteResult(char value)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.Write($"{value}");
+        Console.ResetColor();
+    }
 
     /// <summary>
     /// Method for compress a string
@@ -45,7 +33,6 @@ public class Program
         if (!string.IsNullOrWhiteSpace(inputString))
         {
             inputString = Regex.Replace(inputString, @"\s+", "");
-            inputString = (inputString.Any(Char.IsNumber)) ? inputString.ReplaceNumericValues() : inputString;
 
             var repetition = inputString // stores characters that repeats > 3 times
               .GroupBy(x => x)
@@ -59,7 +46,9 @@ public class Program
 
             var outputList = new List<char>(); // aux list to generate the output string
             char last = inputString[0];
-            int repetitionIndex=0, sameIndex=0;
+            int repetitionIndex = 0, sameIndex = 0;
+
+            Console.Write("Output: ");
 
             foreach (var characters in inputString.ToCharArray().Distinct()) // loop to create the new string based on the input
             {
@@ -69,17 +58,21 @@ public class Program
                     {
                         int ascii = 0;
                         outputList.Add(repetition[repetitionIndex].Letter);
+                        Console.Write($"{repetition[repetitionIndex].Letter}");
                         if (repetition[repetitionIndex].Total >= 10) // in case a character repeats over 10 times
                         {
                             ascii = (int)(repetition[repetitionIndex].Total.ToString())[0];
                             outputList.Add((char)ascii);
+                            WriteResult((char)ascii);
                             ascii = (int)(repetition[repetitionIndex].Total.ToString())[1];
                             outputList.Add((char)ascii);
+                            WriteResult((char)ascii);
                         }
                         else
                         {
                             ascii = (int)(repetition[repetitionIndex].Total.ToString())[0];
                             outputList.Add((char)ascii);
+                            WriteResult((char)ascii);
                         }
                         
                         repetitionIndex += (repetitionIndex < (repetition.Count() - 1)) ? 1 : 0;
@@ -93,11 +86,14 @@ public class Program
                         if (same[sameIndex].Total == 2)
                         {
                             outputList.Add(same[sameIndex].Letter);
+                            Console.Write($"{same[sameIndex].Letter}");    
                             outputList.Add(same[sameIndex].Letter);
+                            Console.Write($"{same[sameIndex].Letter}");
                         }
                         else
                         {
                             outputList.Add(same[sameIndex].Letter);
+                            Console.Write($"{same[sameIndex].Letter}");
                         }
                         if (sameIndex < (same.Count() - 1))
                             sameIndex++;
@@ -115,7 +111,15 @@ public class Program
     static void Main(string[] args)
     {
         var program = new Program();
-        Console.WriteLine(program.StringCompression("ab4444444444444444444444444444444444"));
+        program.StringCompression("ab43333");
+        Console.WriteLine();
+        program.StringCompression("abbbb3333");
+        Console.WriteLine();
+        program.StringCompression("ab4444444444444444444444444444444444");
+        Console.WriteLine();
+        program.StringCompression("uuueeeennzzzzz666666678ff");
+        Console.WriteLine();
+        program.StringCompression("dduucckk");
 
     }
 
